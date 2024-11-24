@@ -49,7 +49,15 @@ type GrafanaOrganizationReconciler struct {
 func (r *GrafanaOrganizationReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
 
-	// TODO(user): your logic here
+	var org grafanav1alpha1.GrafanaOrganization
+	if err := r.Get(ctx, req.NamespacedName, &org); err != nil {
+		return ctrl.Result{}, err
+	}
+
+	// Update Status
+	if err := r.Status().Update(ctx, &org); err != nil {
+		return ctrl.Result{}, err
+	}
 
 	return ctrl.Result{}, nil
 }
