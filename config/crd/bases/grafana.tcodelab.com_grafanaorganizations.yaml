@@ -11,6 +11,9 @@ spec:
     kind: GrafanaOrganization
     listKind: GrafanaOrganizationList
     plural: grafanaorganizations
+    shortNames:
+    - gorg
+    - org
     singular: grafanaorganization
   scope: Namespaced
   versions:
@@ -54,3 +57,5 @@ spec:
         type: object
     served: true
     storage: true
+    subresources:
+      status: {}

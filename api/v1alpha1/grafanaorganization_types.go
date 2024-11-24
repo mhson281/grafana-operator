@@ -20,7 +20,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-
 // GrafanaOrganizationSpec defines the desired state of GrafanaOrganization
 type GrafanaOrganizationSpec struct {
 	Name string `json:"name"`
@@ -31,6 +30,9 @@ type GrafanaOrganizationStatus struct {
 	OrganizationID int `json:"organizationID,omitempty"`
 }
 
+// +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+// +kubebuilder:resource:shortName=gorg;org
 // GrafanaOrganization is the Schema for the grafanaorganizations API
 type GrafanaOrganization struct {
 	metav1.TypeMeta   `json:",inline"`
@@ -40,6 +42,7 @@ type GrafanaOrganization struct {
 	Status GrafanaOrganizationStatus `json:"status,omitempty"`
 }
 
+// +kubebuilder:object:root=true
 // GrafanaOrganizationList contains a list of GrafanaOrganization
 type GrafanaOrganizationList struct {
 	metav1.TypeMeta `json:",inline"`
