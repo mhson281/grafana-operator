@@ -19,7 +19,7 @@ package controller
 import (
 	"bytes"
 	"context"
-	"encoding/base64"
+	//"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -29,7 +29,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/log"
 
 	"github.com/go-logr/logr"
 	grafanav1alpha1 "github.com/mhson281/grafanaOperator/api/v1alpha1"
@@ -65,9 +64,9 @@ func (r *GrafanaOrganizationReconciler) Reconcile(ctx context.Context, req ctrl.
 	if org.Status.OrganizationID != 0 {
 		log.Info("Organization already exists in Grafana", "OrganizationID", org.Status.OrganizationID)
 		return ctrl.Result{}, nil
-	} 
+	}
 
-	grafanaOrgID, err := r.createGrafanaOrg(org.Spec.Name)
+	grafanaOrgID, err := r.createGrafanaOrg(ctx, org.Spec.Name)
 	if err != nil {
 		log.Error(err, "Failed to create organization in Grafana")
 		return ctrl.Result{}, err
@@ -95,7 +94,7 @@ func (r *GrafanaOrganizationReconciler) createGrafanaOrg(ctx context.Context, or
 
 	// extract admin username and pass from secret
 	adminName := string(secret.Data["admin-user"])
-	adminPassword := string(secret.Dta["admin-password"])
+	adminPassword := string(secret.Data["admin-password"])
 
 	payload := map[string]string{"name": orgName}
 	body, _ := json.Marshal(payload)
@@ -103,11 +102,11 @@ func (r *GrafanaOrganizationReconciler) createGrafanaOrg(ctx context.Context, or
 	// create the http Request
 	req, err := http.NewRequest("POST", apiURL, bytes.NewBuffer(body))
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("Failed to send HTTP requeset: %v", err)
 	}
 
-	req.Header.Set("Authorization", "Basic"+basicAuth(adminName, adminPassword))
 	req.Header.Set("Content-Type", "application/json")
+	req.SetBasicAuth(adminName, adminPassword)
 
 	// Send the Request
 	client := &http.Client{}
@@ -118,25 +117,20 @@ func (r *GrafanaOrganizationReconciler) createGrafanaOrg(ctx context.Context, or
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
-		return 0, fmt.Errorf("Failed to create new organization: %s", resp.Status)
+		return 0, fmt.Errorf("Failed to create new organization with: %s", resp.Status)
 	}
 
 	var result map[string]interface{}
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		return 0, err
+		return 0, fmt.Errorf("Failed to decode response body: %v", err)
 	}
 
 	orgID, ok := result["id"].(float64)
 	if !ok {
-		return 0, fmt.Errorf("Invalid reponse from grafana API")
+		return 0, fmt.Errorf("Invalid reponse from grafana API: missing org id")
 	}
 
 	return int(orgID), nil
-}
-
-func basicAuth(username, password string) string {
-	auth := username + ":" + password
-	return base64.StdEncoding.EncodeToString([]byte(auth))
 }
 
 // SetupWithManager sets up the controller with the Manager.
