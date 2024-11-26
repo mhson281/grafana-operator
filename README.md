@@ -12,6 +12,18 @@
 - kubectl version v1.11.3+.
 - Access to a Kubernetes v1.11.3+ cluster.
 
+### CRDs
+
+Custom resource
+- GrafanaUser
+- GrafanaOrganization
+- Grafanateams
+- Grafanadashboard
+- GrafanaDataSource
+  
+Order of creation:
+- organization -> folders > teams > data source > dashboards > users
+
 ### To Deploy on the cluster
 **Build and push your image to the location specified by `IMG`:**
 
