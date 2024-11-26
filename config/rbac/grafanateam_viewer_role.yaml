@@ -1,0 +1,23 @@
+# permissions for end users to view grafanateams.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: grafanaoperator
+    app.kubernetes.io/managed-by: kustomize
+  name: grafanateam-viewer-role
+rules:
+- apiGroups:
+  - grafana.tcodelab.com
+  resources:
+  - grafanateams
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - grafana.tcodelab.com
+  resources:
+  - grafanateams/status
+  verbs:
+  - get

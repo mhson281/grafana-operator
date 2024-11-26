@@ -1,0 +1,9 @@
+apiVersion: grafana.tcodelab.com/v1alpha1
+kind: GrafanaTeam
+metadata:
+  labels:
+    app.kubernetes.io/name: grafanaoperator
+    app.kubernetes.io/managed-by: kustomize
+  name: grafanateam-sample
+spec:
+  # TODO(user): Add fields here

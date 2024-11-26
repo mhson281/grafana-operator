@@ -17,4 +17,13 @@ resources:
   kind: GrafanaOrganization
   path: github.com/mhson281/grafanaOperator/api/v1alpha1
   version: v1alpha1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: tcodelab.com
+  group: grafana
+  kind: GrafanaTeam
+  path: github.com/mhson281/grafanaOperator/api/v1alpha1
+  version: v1alpha1
 version: "3"
