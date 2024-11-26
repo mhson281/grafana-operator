@@ -20,26 +20,21 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
 // GrafanaTeamSpec defines the desired state of GrafanaTeam
 type GrafanaTeamSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
-
-	// Foo is an example field of GrafanaTeam. Edit grafanateam_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	Name string `json:"name"`
+	OrgId int64 `json:"orgId"`
 }
 
 // GrafanaTeamStatus defines the observed state of GrafanaTeam
 type GrafanaTeamStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	TeamId int64 `json:"teamId"`
 }
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
+// +kubebuilder:resource:shortName=gt;team
 
 // GrafanaTeam is the Schema for the grafanateams API
 type GrafanaTeam struct {
