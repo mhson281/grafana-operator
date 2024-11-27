@@ -1,0 +1,63 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.1
+  name: grafanateams.grafana.tcodelab.com
+spec:
+  group: grafana.tcodelab.com
+  names:
+    kind: GrafanaTeam
+    listKind: GrafanaTeamList
+    plural: grafanateams
+    shortNames:
+    - gt
+    - team
+    singular: grafanateam
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: GrafanaTeam is the Schema for the grafanateams API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: GrafanaTeamSpec defines the desired state of GrafanaTeam
+            properties:
+              name:
+                type: string
+            required:
+            - name
+            type: object
+          status:
+            description: GrafanaTeamStatus defines the observed state of GrafanaTeam
+            properties:
+              orgId:
+                format: int64
+                type: integer
+            required:
+            - orgId
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

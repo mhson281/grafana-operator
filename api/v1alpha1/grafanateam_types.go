@@ -24,18 +24,16 @@ import (
 // GrafanaTeamSpec defines the desired state of GrafanaTeam
 type GrafanaTeamSpec struct {
 	Name string `json:"name"`
-	OrgId int64 `json:"orgId"`
 }
 
 // GrafanaTeamStatus defines the observed state of GrafanaTeam
 type GrafanaTeamStatus struct {
-	TeamId int64 `json:"teamId"`
+	OrganizationID int64 `json:"organizationID,omitempty"` // Team will be created associated to OrgID
 }
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:shortName=gt;team
-
 // GrafanaTeam is the Schema for the grafanateams API
 type GrafanaTeam struct {
 	metav1.TypeMeta   `json:",inline"`
@@ -46,7 +44,6 @@ type GrafanaTeam struct {
 }
 
 // +kubebuilder:object:root=true
-
 // GrafanaTeamList contains a list of GrafanaTeam
 type GrafanaTeamList struct {
 	metav1.TypeMeta `json:",inline"`

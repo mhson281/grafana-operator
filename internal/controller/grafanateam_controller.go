@@ -19,6 +19,8 @@ package controller
 import (
 	"context"
 
+	corev1 "k8s.io/api/core/v1"
+	errors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -37,19 +39,23 @@ type GrafanaTeamReconciler struct {
 // +kubebuilder:rbac:groups=grafana.tcodelab.com,resources=grafanateams/status,verbs=get;update;patch
 // +kubebuilder:rbac:groups=grafana.tcodelab.com,resources=grafanateams/finalizers,verbs=update
 
-// Reconcile is part of the main kubernetes reconciliation loop which aims to
-// move the current state of the cluster closer to the desired state.
-// TODO(user): Modify the Reconcile function to compare the state specified by
-// the GrafanaTeam object against the actual cluster state, and then
-// perform operations to make the cluster state reflect the state specified by
-// the user.
-//
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.19.0/pkg/reconcile
 func (r *GrafanaTeamReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = log.FromContext(ctx)
+	log := log.FromContext(ctx)
 
-	// TODO(user): your logic here
+	// Fetch the GrafanaTeam instance
+	var team grafanav1alpha1.GrafanaTeam
+	if err := r.Get(ctx, req.NamespacedName, &team); err != nil {
+		if errors.IsNotFound(err) {
+			log.Info("A Grafana Team resource has not been found")
+			return ctrl.Result{}, nil
+		}
+		log.Error(err, "Failed to get GrafanaTeam")
+		return ctrl.Result{}, nil
+	}
+
+
 
 	return ctrl.Result{}, nil
 }
