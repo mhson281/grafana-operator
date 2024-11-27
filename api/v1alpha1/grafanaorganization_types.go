@@ -27,7 +27,7 @@ type GrafanaOrganizationSpec struct {
 
 // GrafanaOrganizationStatus defines the observed state of GrafanaOrganization
 type GrafanaOrganizationStatus struct {
-	OrganizationID int `json:"organizationID,omitempty"`
+	OrganizationID int `json:"org_id,omitempty"`
 }
 
 // +kubebuilder:object:root=true

@@ -20,7 +20,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-
 // GrafanaTeamSpec defines the desired state of GrafanaTeam
 type GrafanaTeamSpec struct {
 	Name string `json:"name"`
@@ -28,7 +27,8 @@ type GrafanaTeamSpec struct {
 
 // GrafanaTeamStatus defines the observed state of GrafanaTeam
 type GrafanaTeamStatus struct {
-	OrganizationID int64 `json:"organizationID,omitempty"` // Team will be created associated to OrgID
+	OrganizationID int64 `json:"org_id,omitempty"` // Team will be created associated to OrgID
+	TeamID         int64 `json:"team_id,omitempty"`
 }
 
 // +kubebuilder:object:root=true
