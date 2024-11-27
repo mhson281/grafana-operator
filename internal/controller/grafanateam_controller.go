@@ -85,7 +85,7 @@ func (r *GrafanaTeamReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 	orgID := org.Status.OrganizationID
 
 	// Call the Grafana API to create the team with the same name/org_id
-teamID, err := r.createGrafanaTeam(team.spec.Name, orgID)
+  teamID, err := r.createGrafanaTeam(team.Spec.Name, orgID)
 	if err != nil {
 		log.Error(err, "Failed to create team in Grafana")
 	}

@@ -50,11 +50,12 @@ spec:
           status:
             description: GrafanaTeamStatus defines the observed state of GrafanaTeam
             properties:
-              orgId:
+              org_id:
                 format: int64
                 type: integer
-            required:
-            - orgId
+              team_id:
+                format: int64
+                type: integer
             type: object
         type: object
     served: true

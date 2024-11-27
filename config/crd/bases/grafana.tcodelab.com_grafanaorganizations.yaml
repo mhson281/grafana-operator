@@ -51,7 +51,7 @@ spec:
           status:
             description: GrafanaOrganizationStatus defines the observed state of GrafanaOrganization
             properties:
-              organizationID:
+              org_id:
                 type: integer
             type: object
         type: object
