@@ -85,7 +85,7 @@ func (r *GrafanaTeamReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 	orgID := org.Status.OrganizationID
 
 	// Call the Grafana API to create the team with the same name/org_id
-  teamID, err := r.createGrafanaTeam(team.Spec.Name, orgID)
+	teamID, err := r.createGrafanaTeam(ctx, team.Spec.Name, orgID)
 	if err != nil {
 		log.Error(err, "Failed to create team in Grafana")
 	}
@@ -100,7 +100,7 @@ func (r *GrafanaTeamReconciler) Reconcile(ctx context.Context, req ctrl.Request)
 	return ctrl.Result{}, nil
 }
 
-func (r *GrafanaOrganizationReconciler) createGrafanaTeam(teamName string, orgID int64) (int64, error) {
+func (r *GrafanaTeamReconciler) createGrafanaTeam(ctx context.Context, teamName string, orgID int64) (int64, error) {
 	apiURL := "http://172.18.0.3:32000/api/orgs"
 
 	var secret corev1.Secret
@@ -116,7 +116,7 @@ func (r *GrafanaOrganizationReconciler) createGrafanaTeam(teamName string, orgID
 	adminPassword := string(secret.Data["admin-password"])
 
 	payload := map[string]interface{}{
-		"name": teamName,
+		"name":  teamName,
 		"orgId": orgID,
 	}
 
@@ -143,7 +143,7 @@ func (r *GrafanaOrganizationReconciler) createGrafanaTeam(teamName string, orgID
 
 	// Check response
 	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusCreated {
-		return 0, fmt.Errorf("Failed to create new team: %s", resp.Status) 
+		return 0, fmt.Errorf("Failed to create new team: %s", resp.Status)
 	}
 	defer resp.Body.Close()
 

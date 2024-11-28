@@ -82,7 +82,7 @@ func (r *GrafanaOrganizationReconciler) Reconcile(ctx context.Context, req ctrl.
 	return ctrl.Result{}, nil
 }
 
-func (r *GrafanaOrganizationReconciler) createGrafanaOrg(ctx context.Context, orgName string) (int, error) {
+func (r *GrafanaOrganizationReconciler) createGrafanaOrg(ctx context.Context, orgName string) (int64, error) {
 	apiURL := "http://172.18.0.3:32000/api/orgs"
 
 	var secret corev1.Secret
